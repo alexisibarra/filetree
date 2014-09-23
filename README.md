@@ -5,7 +5,6 @@ Representación un árbol de directorio a través de listas en C
 ## Sinopsis
 ```bash
 $ ./filetree ENTRADA
-```
 
 ## Descripción
 
@@ -21,7 +20,6 @@ First Search).
 - El archivo debe contener una sola orden por línea, sin líneas en blanco ni
   comentarios. Cada línea debe seguir el siguiente formato:
     
-
   ``` comando direccion ```
   
   Donde comando debe ser alguno de los siguientes:
