@@ -16,6 +16,9 @@
 
 3.  El resto de los archivos y directorios se irán agregando con las órdenes:
 
+```bash
+$ md < nombre absoluto del nuevo directorio>
+```
   md < nombre absoluto del nuevo directorio>
 
   ma < nombre absoluto del nuevo archivo>
