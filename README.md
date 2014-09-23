@@ -24,7 +24,7 @@
 
   rm < nombre absoluto del archivo o directorio>
 
-Listar los archivos o directorios de un directorio con la orden:
+  Listar los archivos o directorios de un directorio con la orden:
 
   ls < nombre absoluto del directorio>
 
