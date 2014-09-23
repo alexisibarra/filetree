@@ -21,6 +21,8 @@
 #include <string.h>
 #include <sysexits.h>
 
+#include "nodo.h"
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  proc_ma
@@ -76,30 +78,40 @@ int main(int argc, char *argv[]) {
   char command[4];
   char path[80];
 
-	if (argc != 2) {
-		puts("Se debe pasar exactamente un argumento.");
-		exit(EX_USAGE);
-	}
-	if ((fp = fopen(argv[1], "r")) == 0){
-    perror("El archivo no existe; fopen");
-    exit(EX_USAGE);
-  }
-  while (fscanf(fp, "%s %s", command, path) == 2){
-    if (strncmp( command, "ma", 2) == 0){
-      proc_ma(path);
-    } else
-    if (strncmp( command, "md", 2) == 0){
-      proc_md(path);
-    } else
-    if (strncmp( command, "ls", 2) == 0){
-      proc_ls(path);
-    } else
-    if (strncmp( command, "rm", 2) == 0){
-      proc_rm(path);
-    }
-  }
+  Nodo * nodo;
 
-  fclose(fp);
+  if ((nodo = (Nodo *) malloc (sizeof (Nodo))) == NULL)
+    return -1;
+
+  inicializar(nodo);
+  imprimir(nodo);
+  agregarElemento(nodo);
+  imprimir(nodo);
+
+	/* if (argc != 2) { */
+	/* 	puts("Se debe pasar exactamente un argumento."); */
+	/* 	exit(EX_USAGE); */
+	/* } */
+	/* if ((fp = fopen(argv[1], "r")) == 0){ */
+    /* perror("El archivo no existe; fopen"); */
+    /* exit(EX_USAGE); */
+  /* } */
+  /* while (fscanf(fp, "%s %s", command, path) == 2){ */
+    /* if (strncmp( command, "ma", 2) == 0){ */
+      /* proc_ma(path); */
+    /* } else */
+    /* if (strncmp( command, "md", 2) == 0){ */
+      /* proc_md(path); */
+    /* } else */
+    /* if (strncmp( command, "ls", 2) == 0){ */
+      /* proc_ls(path); */
+    /* } else */
+    /* if (strncmp( command, "rm", 2) == 0){ */
+      /* proc_rm(path); */
+    /* } */
+  /* } */
+
+  /* fclose(fp); */
 }
 
 
