@@ -76,9 +76,12 @@ proc_rm ( char *command )
 int main(int argc, char *argv[]) {
   FILE* fp = NULL;
   char command[4];
-  char path[80];
-  Nodo * arbol;
+  char *path;
+  /* Nodo * arbol; */
 
+  Arbol arbol = nuevoNodo();
+
+  /* printf ( "%s\n", arbol->nombre ); */
 
 	if (argc != 2) {
 		puts("Se debe pasar exactamente un argumento.");
@@ -89,24 +92,38 @@ int main(int argc, char *argv[]) {
     exit(EX_USAGE);
   }
 
-  if (inicializar(arbol) < 0 ) exit(EX_USAGE); //Mejorar código de error
+  imprimir(arbol);
 
-  while (fscanf(fp, "%s %s", command, path) == 2){
-    if (strncmp( command, "ma", 2) == 0){
-      insertar(arbol, path);
-    } else
-    if (strncmp( command, "md", 2) == 0){
-      /* proc_md(path); */
-    } else
-    if (strncmp( command, "ls", 2) == 0){
-      /* proc_ls(path); */
-    } else
-    if (strncmp( command, "rm", 2) == 0){
-      /* proc_rm(path); */
-    }
+  path = "ma /history.bat";
+
+  if ( insertarArchivo(arbol, path) < 0 ) {
+    printf("No es posible insertar el archivo %s\n",path);
   }
 
-  fclose(fp);
+
+  /* if (inicializar(arbol) < 0 ) exit(EX_USAGE); //Mejorar código de error */
+
+  /* imprimir(arbol); */
+
+  /* while (fscanf(fp, "%s %s", command, path) == 2){ */
+  /*   if (strncmp( command, "ma", 2) == 0){ */
+  /*     if ( insertarArchivo(arbol, path) < 0 ) { */
+  /*       printf("No es posible insertar el archivo %s\n",path); */
+  /*     } */
+  /*     printf("\n"); */
+  /*   } else */
+  /*   if (strncmp( command, "md", 2) == 0){ */
+  /*     /1* proc_md(path); *1/ */
+  /*   } else */
+  /*   if (strncmp( command, "ls", 2) == 0){ */
+  /*     /1* proc_ls(path); *1/ */
+  /*   } else */
+  /*   if (strncmp( command, "rm", 2) == 0){ */
+  /*     /1* proc_rm(path); *1/ */
+  /*   } */
+  /* } */
+
+  /* fclose(fp); */
 }
 
 
