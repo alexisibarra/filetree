@@ -17,16 +17,32 @@
  */
 #include <stdbool.h>
 
-typedef struct NodoArbol {
+typedef struct Nodo{
   char *nombre;
   bool file;
   int nFiles;
+  struct Nodo *padre;
+  struct Nodo *hermano;
+  struct Nodo *hijo;
 } Nodo;
 
-void inicializar(Nodo * nodo){
-  nodo->nombre = "/";
-  nodo->file = false;
-  nodo->nFiles = 0;
+int inicializar(Nodo * nodo){
+
+  if ((nodo = (Nodo *) malloc (sizeof (Nodo))) == NULL)
+    return -1;
+
+  nodo->nombre  = "/";
+  nodo->file    = false;
+  nodo->nFiles  = 0;
+  nodo->padre   = 0;
+  nodo->hermano = 0;
+  nodo->hijo    = 0;
+
+  return 1;
+}
+
+void insertar(Nodo * nodo, char *path){
+  printf("%s\n", path);
 }
 
 void imprimir(Nodo * nodo){
