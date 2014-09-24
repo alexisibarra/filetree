@@ -77,41 +77,36 @@ int main(int argc, char *argv[]) {
   FILE* fp = NULL;
   char command[4];
   char path[80];
+  Nodo * arbol;
 
-  Nodo * nodo;
 
-  if ((nodo = (Nodo *) malloc (sizeof (Nodo))) == NULL)
-    return -1;
+	if (argc != 2) {
+		puts("Se debe pasar exactamente un argumento.");
+		exit(EX_USAGE);
+	}
+	if ((fp = fopen(argv[1], "r")) == 0){
+    perror("El archivo no existe; fopen");
+    exit(EX_USAGE);
+  }
 
-  inicializar(nodo);
-  imprimir(nodo);
-  agregarElemento(nodo);
-  imprimir(nodo);
+  if (inicializar(arbol) < 0 ) exit(EX_USAGE); //Mejorar código de error
 
-	/* if (argc != 2) { */
-	/* 	puts("Se debe pasar exactamente un argumento."); */
-	/* 	exit(EX_USAGE); */
-	/* } */
-	/* if ((fp = fopen(argv[1], "r")) == 0){ */
-    /* perror("El archivo no existe; fopen"); */
-    /* exit(EX_USAGE); */
-  /* } */
-  /* while (fscanf(fp, "%s %s", command, path) == 2){ */
-    /* if (strncmp( command, "ma", 2) == 0){ */
-      /* proc_ma(path); */
-    /* } else */
-    /* if (strncmp( command, "md", 2) == 0){ */
+  while (fscanf(fp, "%s %s", command, path) == 2){
+    if (strncmp( command, "ma", 2) == 0){
+      insertar(arbol, path);
+    } else
+    if (strncmp( command, "md", 2) == 0){
       /* proc_md(path); */
-    /* } else */
-    /* if (strncmp( command, "ls", 2) == 0){ */
+    } else
+    if (strncmp( command, "ls", 2) == 0){
       /* proc_ls(path); */
-    /* } else */
-    /* if (strncmp( command, "rm", 2) == 0){ */
+    } else
+    if (strncmp( command, "rm", 2) == 0){
       /* proc_rm(path); */
-    /* } */
-  /* } */
+    }
+  }
 
-  /* fclose(fp); */
+  fclose(fp);
 }
 
 
