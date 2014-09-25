@@ -23,62 +23,12 @@
 
 #include "nodo.h"
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  proc_ma
- *  Description:  
- * =====================================================================================
- */
-  void
-proc_ma ( char *command )
-{
-  printf("Encontré un ma %s\n", command);
-}		/* -----  end of function proc_ma  ----- */
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  proc_md
- *  Description:  
- * =====================================================================================
- */
-  void
-proc_md ( char *command )
-{
-  printf("Encontré un md %s\n", command);
-}		/* -----  end of function proc_md  ----- */
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  proc_ls
- *  Description:  
- * =====================================================================================
- */
-  void
-proc_ls ( char *command )
-{
-  printf("Encontré un ls %s\n", command);
-}		/* -----  end of function proc_ls  ----- */
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  proc_rm
- *  Description:  
- * =====================================================================================
- */
-  void
-proc_rm ( char *command )
-{
-  printf("Encontré un rm %s\n", command);
-}		/* -----  end of function proc_rm  ----- */
-
-
-
 int main(int argc, char *argv[]) {
   FILE* fp = NULL;
   char command[4];
-  char path[80];
-  Nodo * arbol;
+  char path[30];
 
+  Arbol arbol = nuevoNodo();
 
 	if (argc != 2) {
 		puts("Se debe pasar exactamente un argumento.");
@@ -89,24 +39,30 @@ int main(int argc, char *argv[]) {
     exit(EX_USAGE);
   }
 
-  if (inicializar(arbol) < 0 ) exit(EX_USAGE); //Mejorar código de error
-
-  while (fscanf(fp, "%s %s", command, path) == 2){
-    if (strncmp( command, "ma", 2) == 0){
-      insertar(arbol, path);
-    } else
-    if (strncmp( command, "md", 2) == 0){
-      /* proc_md(path); */
-    } else
-    if (strncmp( command, "ls", 2) == 0){
-      /* proc_ls(path); */
-    } else
-    if (strncmp( command, "rm", 2) == 0){
-      /* proc_rm(path); */
+  while (1){
+    if (fscanf(fp, "%s %s", command, path) == 2){
+      if (strncmp( command, "ma", 2) == 0){
+        printf ( "PATH: %s\n", path );
+        if ( insertarArchivo(arbol, path) < 0 ) {
+          printf("No es posible insertar el archivo %s\n",path);
+        }
+      } else
+      if (strncmp( command, "md", 2) == 0){
+        /* proc_md(path);  */
+      } else
+      if (strncmp( command, "ls", 2) == 0){
+        /* proc_ls(path);  */
+      } else
+      if (strncmp( command, "rm", 2) == 0){
+        /* proc_rm(path);  */
+      }
+    } else {
+      break;
     }
   }
 
+  imprimir(arbol);
+
   fclose(fp);
 }
-
 
