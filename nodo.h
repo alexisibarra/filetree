@@ -47,23 +47,12 @@ Arbol nuevoNodo(){
   return Temp;
 }
 
-int inicializar(Nodo * nodo){
-
-  if ((nodo = (Nodo *) malloc (sizeof (Nodo))) == NULL)
-    return -1;
-
-  nodo->nombre  = "/";
-  nodo->file    = false;
-  nodo->nFiles  = 0;
-  /* nodo->padre   = 0; */
-  /* nodo->hermano = 0; */
-  /* nodo->hijo    = 0; */
-
-  return 1;
-}
-
 int createSon(Nodo * nodo, bool file, char *nombre ){
   Nodo * son = nuevoNodo();
+
+  if (son == NULL){
+    return -1;
+  }
 
   son->nombre = nombre;
   son->file = file;
@@ -74,47 +63,49 @@ int createSon(Nodo * nodo, bool file, char *nombre ){
   return 1;
 }
 
+void imprimir(Nodo * nodo){
+  // No debería poder imprimir un nodo vacío
+  printf("%s\n", nodo->nombre);
+  if(nodo->hermano != NULL){
+    imprimir(nodo->hermano);
+  }
+  if(nodo->hijo != NULL){
+    imprimir(nodo->hijo);
+  }
+}
+
+bool checkPath(char *path, char **firstElem, char **remainingPath){
+  *firstElem = strchr(path, '/');
+
+  if(path[0] == '/' && path != "/") {
+    if ( firstElem != NULL ) {
+      *remainingPath = strchr(*firstElem+1, '/');
+      if ( *remainingPath != NULL ) {
+        int firstElemSize = strlen(path) - strlen(*remainingPath);
+        char *firstElemDummy = malloc(firstElemSize); // Implementar manejo de error
+        strncpy(firstElemDummy, path, firstElemSize); 
+
+        *firstElem = firstElemDummy;
+      }
+    }
+  } else {
+    *firstElem = NULL;
+    *remainingPath = NULL;
+  }
+}
+
 
 int insertarArchivo(Nodo * nodo, char *path){
-  if ( !path ) {
-    return -1;
-  }
-
   char *firstElem;
   char *remainingPath;
-  int firstElemSize = 0;
 
-  /* firstElem = strchr(path, '/'); */
+  checkPath(path, &firstElem, &remainingPath);
 
-  if ( strchr(path, '/') != NULL ){
-  /* if ( firstElem != NULL ) { */
-    /* printf("Full path: %s\n", path); */ 
-
-    // VERIFICAR SI firstElem ESTÁ EN EL ARBOL
-
-    firstElem = strchr(path, '/');
-    remainingPath = strchr(firstElem+1, '/');
-
-    if ( remainingPath != NULL ) {
-      firstElemSize = strlen(path) - strlen(remainingPath);
-      firstElem = malloc(firstElemSize); // Implementar manejo de error
-      strncpy(firstElem, path, firstElemSize); 
-
-      firstElem = firstElem + 1;
-
-      printf("First element: %s\n", firstElem);
-      printf("Rest of the path: %s\n\n", remainingPath); 
-
-      insertarArchivo(nodo, remainingPath); 
-    } else {
-    /*   // First elem es lo único que se tiene en el path, hay que agregarlo */
-      firstElem = firstElem + 1;
-
-      if(createSon(nodo, true, firstElem) > 0){
-        printf("Hijo %s agregado", firstElem);
-      } else{
-        printf("No se pudo agregar %s", firstElem);
-      }
+  if ( firstElem != NULL ){
+    if ( remainingPath == NULL ) {
+      //Debo insertar firstElem como hijo del nodo actual
+      // printf ( "%s\n", firstElem+1 );
+      createSon(nodo, true, firstElem+1);
     }
   } else {
     // El path no comienza con / no se puede agregar
@@ -123,18 +114,43 @@ int insertarArchivo(Nodo * nodo, char *path){
   return 1;
 }
 
-void imprimir(Nodo * nodo){
-  // No debería poder imprimir un nodo vacío
-  printf("Nombre: %s\n", nodo->nombre);
-  if(nodo->file){
-    printf("Archivo\n");
-  }else{
-    printf("Directorio con %d archivos\n", nodo->nFiles);
-  }
-}
+/* 
+ *
 
-int agregarElemento(Nodo * nodo){
-  if(!nodo->file){
-    nodo->nFiles =+ 1;
-  }
-}
+  // Si entra aquí es porque el path comienza con /
+    // VERIFICAR SI firstElem ESTÁ EN EL ARBOL
+
+    firstElem = strchr(path, '/');
+    remainingPath = strchr(firstElem+1, '/');
+
+    if ( remainingPath != NULL ) {
+
+      // Si entra acá es porque firstElem es un directorio que hay que crear
+
+      firstElemSize = strlen(path) - strlen(remainingPath);
+      firstElem = malloc(firstElemSize); // Implementar manejo de error
+      strncpy(firstElem, path, firstElemSize); 
+
+      firstElem = firstElem + 1;
+
+      if(createSon(nodo, true, firstElem) > 0){
+        printf ( "Agregué %s\n", firstElem );
+      }
+      printf("First element: %s\n", firstElem);
+      printf("Rest of the path: %s\n\n", remainingPath); 
+
+      insertarArchivo(nodo, remainingPath); 
+    } else {
+    // First elem es lo único que se tiene en el path, hay que agregarlo /
+      firstElem = firstElem + 1;
+
+      if(createSon(nodo, true, firstElem) > 0){
+        // printf("Hijo %s agregado", nodo->hijo->nombre);
+        // imprimir(nodo);
+      } else{
+        // printf("No se pudo agregar %s", firstElem);
+      }
+    }
+ *
+ *
+ * */
